@@ -188,16 +188,39 @@ export default {
     this.timeInterval = setInterval(() => {
       this.refreshTime()
     }, 1000)
+    const refreshToken = this.$route.query.refreshToken
+    const uuid = this.$route.query.uuid
+    this.handleJWT(uuid, refreshToken)
   },
   beforeDestroy () {
     clearInterval(this.timeInterval)
   },
   methods: {
     ...mapActions('d2admin/account', [
-      'login'
+      'login',
+      'jwtLogin'
     ]),
     refreshTime () {
       this.time = dayjs().format('HH:mm:ss')
+    },
+    /**
+     * @description handle JWT
+     * @param {String} JWT
+     */
+    handleJWT (uuid, refreshToken) {
+      if (uuid && refreshToken) {
+        this.jwtLogin({
+          uuid: uuid,
+          token: refreshToken
+        })
+          .then(() => {
+          // 重定向对象不存在则返回顶层路径
+            this.$router.replace(this.$route.query.redirect || '/')
+          })
+      } else {
+        // 登录表单校验失败
+        this.$message.error('表单校验失败，请检查')
+      }
     },
     /**
      * @description 接收选择一个用户快速登录的事件
