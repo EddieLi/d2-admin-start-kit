@@ -5,6 +5,7 @@
 		{ 
 			"CURR_LANGUAGE": "当前语言：",
 			"LOCALE_CHANGED": "语言变更",
-			"GREETING": "Hello"
+			"LOCALE_NOT_SUPPORTED": "仅提供切换功能，没有配置具体的语言数据",
+			"GREETING": "你好　{name}"
 		}
 }

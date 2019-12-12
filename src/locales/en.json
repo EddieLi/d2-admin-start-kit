@@ -5,6 +5,8 @@
 		{ 
 			"CURR_LANGUAGE": "Current language:",
 			"LOCALE_CHANGED": "Locale changed",
-			"GREETING": "Hello"
+			"LOCALE_NOT_SUPPORTED": "Locale not supported",
+			"GREETING": "Hello {name}",
+			"LOG_OUT": "Log out"
 		}
 }
