@@ -15,3 +15,10 @@ export function RefreshJWT (data) {
     data
   })
 }
+
+export function GetMe (token) {
+  return request({
+    url: '/auth/users/me/',
+    method: 'get'
+  })
+}

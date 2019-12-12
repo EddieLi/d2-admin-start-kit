@@ -25,7 +25,7 @@
           <!-- logo -->
           <img class="page-login--logo" src="./image/logo@2x.png">
           <!-- form -->
-          <div class="page-login--form">
+          <!-- <div class="page-login--form">
             <el-card shadow="never">
               <el-form
                 ref="loginForm"
@@ -73,12 +73,12 @@
               flex="main:justify cross:center">
               <span><d2-icon name="question-circle"/> 忘记密码</span>
               <span>注册用户</span>
-            </p>
+            </p> -->
             <!-- quick login -->
-            <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
+            <!-- <el-button class="page-login--quick" size="default" type="info" @click="dialogVisible = true">
               快速选择用户（测试功能）
             </el-button>
-          </div>
+          </div> -->
         </div>
         <div class="page-login--content-footer">
           <p class="page-login--content-footer-locales">
@@ -105,19 +105,6 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      title="快速选择用户"
-      :visible.sync="dialogVisible"
-      width="400px">
-      <el-row :gutter="10" style="margin: -20px 0px -10px 0px;">
-        <el-col v-for="(user, index) in users" :key="index" :span="8">
-          <div class="page-login--quick-user" @click="handleUserBtnClick(user)">
-            <d2-icon name="user-circle-o"/>
-            <span>{{user.name}}</span>
-          </div>
-        </el-col>
-      </el-row>
-    </el-dialog>
   </div>
 </template>
 
@@ -135,23 +122,6 @@ export default {
       time: dayjs().format('HH:mm:ss'),
       // 快速选择用户
       dialogVisible: false,
-      users: [
-        {
-          name: 'Admin',
-          username: 'admin',
-          password: 'admin'
-        },
-        {
-          name: 'Editor',
-          username: 'editor',
-          password: 'editor'
-        },
-        {
-          name: 'User1',
-          username: 'user1',
-          password: 'user1'
-        }
-      ],
       // 表单
       formLogin: {
         username: 'admin',
@@ -190,7 +160,11 @@ export default {
     }, 1000)
     const refreshToken = this.$route.query.refreshToken
     const uuid = this.$route.query.uuid
-    this.handleJWT(uuid, refreshToken)
+    if (refreshToken && uuid) {
+      this.handleJWT(uuid, refreshToken)
+    } else {
+      window.location = process.env.VUE_APP_UI
+    }
   },
   beforeDestroy () {
     clearInterval(this.timeInterval)

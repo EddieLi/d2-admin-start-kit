@@ -1,7 +1,7 @@
 import { Message, MessageBox } from 'element-ui'
 import util from '@/libs/util.js'
-import router from '@/router'
-import { AccountLogin, RefreshJWT } from '@api/sys.login'
+// import router from '@/router'
+import { AccountLogin, RefreshJWT, GetMe } from '@api/sys.login'
 
 export default {
   namespaced: true,
@@ -24,10 +24,21 @@ export default {
           .then(async res => {
             util.cookies.set('uuid', uuid)
             util.cookies.set('token', res.access)
-            await dispatch('d2admin/user/set', {
-              name: res.name
-            }, { root: true })
-            await dispatch('load')
+            // get user data
+            GetMe({
+              access: res.access
+            })
+              .then(async res => {
+                await dispatch('d2admin/user/set', {
+                  name: res.username
+                }, { root: true })
+                await dispatch('load')
+                resolve()
+              })
+              .catch(err => {
+                console.log('err: ', err)
+                reject(err)
+              })
             resolve()
           })
           .catch(err => {
@@ -92,9 +103,10 @@ export default {
         // 清空 vuex 用户信息
         await dispatch('d2admin/user/set', {}, { root: true })
         // 跳转路由
-        router.push({
-          name: 'login'
-        })
+        // router.push({
+        //   name: 'login'
+        // })
+        window.location = process.env.VUE_APP_UI
       }
       // 判断是否需要确认
       if (confirm) {
